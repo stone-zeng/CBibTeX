@@ -18,10 +18,33 @@
     <ClInclude Include="BibEntry.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="BibData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BibEntry.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Read_Bib.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BibData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Test_CJK.bib">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="Test_NoCJK.bib">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="tugboat.bib">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="Test_deleteComment.bib">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
 </Project>
