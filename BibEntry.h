@@ -5,21 +5,21 @@
 
 enum BibEntryType
 {
-	Article,
-	Book,
-	Booklet,
-	Conference,
-	Inbook,
-	Incollection,
-	Inproceedings,
-	Manual,
-	Mastersthesis,
-	Misc,
-	Phdthesis,
-	Proceedings,
-	Techreport,
-	Unpublished
-}; 
+    Article,
+    Book,
+    Booklet,
+    Conference,
+    Inbook,
+    Incollection,
+    Inproceedings,
+    Manual,
+    Mastersthesis,
+    Misc,
+    Phdthesis,
+    Proceedings,
+    Techreport,
+    Unpublished
+};
 
 typedef std::string Bib_Type_Key;
 
@@ -48,14 +48,18 @@ typedef int Bib_Type_Year;
 class BibEntry
 {
 public:
-	BibEntry();
-	BibEntryType type;
-	Bib_Type_Key key;
+    BibEntry();
+    BibEntry(const std::string& str_BibEntryType,const std::string& str_BibEntryBody);
 
-	Bib_Type_Author author;
-	Bib_Type_Title title;
-	Bib_Type_Year year;
-	Bib_Type_Publisher publisher;
+    std::string str_BibEntry;
+
+    BibEntryType type;
+    Bib_Type_Key key;
+
+    Bib_Type_Author author;
+    Bib_Type_Title title;
+    Bib_Type_Year year;
+    Bib_Type_Publisher publisher;
 };
 
 #endif
