@@ -1,26 +1,31 @@
-#ifndef _BIB_DATA_H_
+﻿#ifndef _BIB_DATA_H_
 #define _BIB_DATA_H_
 
 #include <vector>
 #include "BibString.h"
 #include "BibEntry.h"
 
-// Get and handle Bib database.
-class BibData
+namespace CBibTeX
 {
-public:
-    BibData();
-    BibData(const BibString& fileName);
+    // 获取并处理 Bib 数据库
+    class BibData
+    {
+    private:
+        typedef std::vector<BibEntry> BibList;
+    public:
+        BibData();
+        BibData(const BibString& fileName);
 
-    // Original Bib data in string format.
-    BibString str_BibData;
+        // 原始 Bib 数据，字符串格式
+        BibString str_BibData;
+        // Bib 条目列表，vector
+        BibList vec_bibEntryList;
 
-    // Bib entry list in a BibEntry vector.
-    std::vector<BibEntry> vec_bibEntryList;
-
-    void deleteComment();
-    BibString::size_type getOneBibEntry(const BibString::size_type& pos_begin);
-    void getBibEntryList();
-};
+        // 删除注释
+        void deleteComment();
+        // 获取 Bib 列表，返回列表长度
+        void getBibEntryList();
+    };
+}
 
 #endif

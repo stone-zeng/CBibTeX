@@ -6,89 +6,87 @@
 #include "BibFields.h"
 #include "BibString.h"
 
-enum BibEntryType
+namespace CBibTeX
 {
-    Article,
-    Book,
-    Booklet,
-    Conference,
-    Inbook,
-    Incollection,
-    Inproceedings,
-    Manual,
-    Mastersthesis,
-    Misc,
-    Phdthesis,
-    Proceedings,
-    Techreport,
-    Unpublished
-};
+    enum BibEntryType
+    {
+        Article,
+        Book,
+        Booklet,
+        Conference,
+        Inbook,
+        Incollection,
+        Inproceedings,
+        Manual,
+        Mastersthesis,
+        Misc,
+        Phdthesis,
+        Proceedings,
+        Techreport,
+        Unpublished
+    };
 
-const std::map<BibEntryType, BibString> map_BibEntry = {
-    { Article,         "ARTICLE" },
-    { Book,            "BOOK" },
-    { Booklet,         "BOOKLET" },
-    { Conference,      "CONFERENCE" },
-    { Inbook,          "INBOOK" },
-    { Incollection,    "INCOLLECTION" },
-    { Inproceedings,   "INPROCEEDINGS" },
-    { Manual,          "MANUAL" },
-    { Mastersthesis,   "MASTERSTHESIS" },
-    { Misc,            "MISC" },
-    { Phdthesis,       "PHDTHESIS" },
-    { Proceedings,     "PROCEEDINGS" },
-    { Techreport,      "TECHREPORT" },
-    { Unpublished,     "UNPUBLISHED" }
-};
+    const std::map<BibEntryType, BibString> map_BibEntry = {
+        { Article,         "ARTICLE" },
+        { Book,            "BOOK" },
+        { Booklet,         "BOOKLET" },
+        { Conference,      "CONFERENCE" },
+        { Inbook,          "INBOOK" },
+        { Incollection,    "INCOLLECTION" },
+        { Inproceedings,   "INPROCEEDINGS" },
+        { Manual,          "MANUAL" },
+        { Mastersthesis,   "MASTERSTHESIS" },
+        { Misc,            "MISC" },
+        { Phdthesis,       "PHDTHESIS" },
+        { Proceedings,     "PROCEEDINGS" },
+        { Techreport,      "TECHREPORT" },
+        { Unpublished,     "UNPUBLISHED" }
+    };
 
-class BibEntry
-{
-private:
-    //BibString str_BibEntry_Data;
+    class BibEntry
+    {
+    private:
+        //BibString str_BibEntry_Data;
 
-    // Get the Bib entry type from string.
-    BibEntryType getType(const BibString& str_BibEntryType);
-    BibString getKey(const BibString& str_BibEntryBody);
-    BibFields getFields(const BibString& str_BibEntryBody);
+        // Get the Bib entry type from string.
+        BibEntryType getType(const BibString& str_BibEntryType);
+        BibString getKey(const BibString& str_BibEntryBody);
+        BibFieldSet getFields(const BibString& str_BibEntryBody);
 
-public:
-    BibEntry();
-    BibEntry(const BibString& str_BibEntryType, const BibString& str_BibEntryBody);
+    public:
+        BibEntry();
+        BibEntry(const BibString& str_BibEntryType, const BibString& str_BibEntryBody);
 
-    BibEntryType type;
-    BibString key;
-    BibFields fields;
+        void initialize(const BibString& str_BibEntryType, const BibString& str_BibEntryBody);
 
-    //BibString author;
-    //BibString title;
-    //int year;
-    //BibString publisher;
+        BibEntryType type;
+        BibString key;
+        BibFieldSet fields;
 
-
-
-    //typedef std::string Bib_Type_Key;
-    //
-    //typedef std::string Bib_Type_Address;
-    //typedef std::string Bib_Type_Author;
-    //typedef std::string Bib_Type_BookTitle;
-    //typedef std::string Bib_Type_Chapter;
-    //typedef std::string Bib_Type_CrossRef;
-    //typedef std::string Bib_Type_Edition;
-    //typedef std::string Bib_Type_Editor;
-    //typedef std::string Bib_Type_HowPublished;
-    //typedef std::string Bib_Type_Institution;
-    //typedef std::string Bib_Type_Month;
-    //typedef std::string Bib_Type_Note;
-    //typedef std::string Bib_Type_Number;
-    //typedef std::string Bib_Type_Organization;
-    //typedef std::string Bib_Type_Pages;
-    //typedef std::string Bib_Type_Publisher;
-    //typedef std::string Bib_Type_School;
-    //typedef std::string Bib_Type_Series;
-    //typedef std::string Bib_Type_Title;
-    //typedef std::string Bib_Type_Type;
-    //typedef std::string Bib_Type_Volume;
-    //typedef int Bib_Type_Year;
-};
+        //typedef std::string Bib_Type_Key;
+        //
+        //typedef std::string Bib_Type_Address;
+        //typedef std::string Bib_Type_Author;
+        //typedef std::string Bib_Type_BookTitle;
+        //typedef std::string Bib_Type_Chapter;
+        //typedef std::string Bib_Type_CrossRef;
+        //typedef std::string Bib_Type_Edition;
+        //typedef std::string Bib_Type_Editor;
+        //typedef std::string Bib_Type_HowPublished;
+        //typedef std::string Bib_Type_Institution;
+        //typedef std::string Bib_Type_Month;
+        //typedef std::string Bib_Type_Note;
+        //typedef std::string Bib_Type_Number;
+        //typedef std::string Bib_Type_Organization;
+        //typedef std::string Bib_Type_Pages;
+        //typedef std::string Bib_Type_Publisher;
+        //typedef std::string Bib_Type_School;
+        //typedef std::string Bib_Type_Series;
+        //typedef std::string Bib_Type_Title;
+        //typedef std::string Bib_Type_Type;
+        //typedef std::string Bib_Type_Volume;
+        //typedef int Bib_Type_Year;
+    };
+}
 
 #endif

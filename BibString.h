@@ -3,7 +3,10 @@
 
 #include <string>
 
-// TODO: 20170124  use UNICODE.
-typedef std::string BibString;
+namespace CBibTeX
+{
+    // TODO: 20170124  use UNICODE.
+    typedef std::string BibString;
+}
 
 #endif

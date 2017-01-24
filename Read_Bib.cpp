@@ -4,6 +4,7 @@
 #include <fstream>
 #include <Windows.h>
 #include "BibData.h"
+
 using namespace std;
 
 int main()
@@ -15,9 +16,9 @@ int main()
     QueryPerformanceFrequency(&freq);
 
     QueryPerformanceCounter(&beginTime);
-    //BibData test("Test_Bib_Data/tugboat.bib");
-    //BibData test("Test_Bib_Data/Test_NoCJK.bib");
-    BibData test("Test_Bib_Data/biblatex-ieee.bib");
+    //CBibTeX::BibData test("Test_Bib_Data/tugboat.bib");
+    //CBibTeX::BibData test("Test_Bib_Data/Test_NoCJK.bib");
+    CBibTeX::BibData test("Test_Bib_Data/biblatex-ieee.bib");
 
     //for (auto i : test.data)
     //	cout << i;
@@ -39,6 +40,6 @@ int main()
     cout << "Time(get Bib entry)= " << (double) ((endTime.QuadPart - beginTime.QuadPart) * 1000. / freq.QuadPart) << " ms."
         << endl << endl;
 
-    for (auto i : test.vec_bibEntryList)
-        cout << i.key << endl;
+    //for (auto i : test.vec_bibEntryList)
+    //    cout << i.key << endl;
 }
