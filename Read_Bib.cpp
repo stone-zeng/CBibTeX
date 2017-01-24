@@ -14,20 +14,10 @@ int main()
     LARGE_INTEGER endTime;
     QueryPerformanceFrequency(&freq);
 
-    //string fileName("Test_NoCJK.bib");
-    ////ifstream inputFile(fileName.c_str(), fstream::in);
-    //ifstream inputFile("Test_NoCJK.bib", fstream::in);
-
-    //if (inputFile)
-    //{
-    //	cerr << "Error: Cannot found the input file " << fileName << ".\n";
-    //	exit(1);
-    //}
-
-
     QueryPerformanceCounter(&beginTime);
-    //BibData test("tugboat.bib");
-    BibData test("Test_Bib_Data/Test_NoCJK.bib");
+    //BibData test("Test_Bib_Data/tugboat.bib");
+    //BibData test("Test_Bib_Data/Test_NoCJK.bib");
+    BibData test("Test_Bib_Data/biblatex-ieee.bib");
 
     //for (auto i : test.data)
     //	cout << i;
@@ -36,12 +26,6 @@ int main()
     QueryPerformanceCounter(&endTime);
     cout << "Time(read)= " << (double) ((endTime.QuadPart - beginTime.QuadPart) * 1000. / freq.QuadPart) << " ms." << endl << endl;
 
-
-    //cout << test.data.find('%') << endl;
-    //cout << test.data.find("%%") << endl;
-    //cout << test.data.find("%%%") << endl;
-
-
     QueryPerformanceCounter(&beginTime);
     test.deleteComment();
     QueryPerformanceCounter(&endTime);
@@ -49,20 +33,12 @@ int main()
         << endl << endl;
 
 
-    //ofstream out("deleteComment.bib");
-    //QueryPerformanceCounter(&beginTime);
-    //for (auto i : test.data)
-    //	out << i;
-    //out << endl;
-    //cout << test.data.length() << endl;
-    //QueryPerformanceCounter(&endTime);
-    //cout << "Time= " << (double) ((endTime.QuadPart - beginTime.QuadPart) * 1000. / freq.QuadPart) << " ms." << endl << endl;
-    //out.close();
-
-
     QueryPerformanceCounter(&beginTime);
     test.getBibEntryList();
     QueryPerformanceCounter(&endTime);
     cout << "Time(get Bib entry)= " << (double) ((endTime.QuadPart - beginTime.QuadPart) * 1000. / freq.QuadPart) << " ms."
         << endl << endl;
+
+    for (auto i : test.vec_bibEntryList)
+        cout << i.key << endl;
 }

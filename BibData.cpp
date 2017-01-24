@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include "MyFunctions.h"
+#include "BibString.h"
 #include "BibData.h"
 
 using namespace std;
@@ -9,7 +10,7 @@ using namespace std;
 BibData::BibData()
 {}
 
-BibData::BibData(const string& fileName)
+BibData::BibData(const BibString& fileName)
 {
     ifstream inputFile(fileName, fstream::in);
 
@@ -21,7 +22,7 @@ BibData::BibData(const string& fileName)
     }
     else
     {
-        //TODO: 20160806  use C++ throw and catch
+        // TODO: 20160806  use C++ throw and catch.
         cerr << "Error: Cannot found the input file " << fileName << ".\n";
         exit(1);
     }
@@ -43,14 +44,18 @@ void BibData::deleteComment()
 
 }
 
-string::size_type BibData::getBibEntry(const string::size_type& pos_begin)
+BibString::size_type BibData::getOneBibEntry(const BibString::size_type& pos_begin)
 {
+    // Search for '@' as the begin marker of BibEntry.
     auto pos_beginBibEntry = findCharacter(str_BibData, '@', pos_begin);
 
+    // Test for end position.
     if (pos_beginBibEntry == str_BibData.npos)
         return str_BibData.npos;
     else
     {
+        // The characters in '{}' will become the BibEntry body.
+
         auto pos_beginBibEntryBody
             = findCharacter(str_BibData, '{', pos_beginBibEntry);
         auto pos_endBibEntryBody = pos_beginBibEntryBody;
@@ -67,27 +72,36 @@ string::size_type BibData::getBibEntry(const string::size_type& pos_begin)
             ++pos_endBibEntryBody;
         } while (bracketFlag != 0);
 
+        // Get the length of BibEntryType (from '@' to '{'-1)
+        //               and BibEntryBody (from '{' to '}').
 
         auto len_BibEntryType = pos_beginBibEntryBody - pos_beginBibEntry;
         auto len_BibEntryBody = pos_endBibEntryBody - pos_beginBibEntryBody;
 
-        string str_BibEntryType(str_BibData, pos_beginBibEntry, pos_beginBibEntryBody - pos_beginBibEntry);
-        string str_BibEntryBody(str_BibData, pos_beginBibEntryBody, len_BibEntryBody);
+        // Get one Bib entry.
+
+        BibString str_BibEntryType(str_BibData, pos_beginBibEntry, len_BibEntryType);
+        BibString str_BibEntryBody(str_BibData, pos_beginBibEntryBody, len_BibEntryBody);
         
-        BibEntry temp(str_BibEntryType, str_BibEntryBody);
+        BibEntry oneEntry(str_BibEntryType, str_BibEntryBody);
 
-        vec_bibEntryList.push_back(temp);
+        // Append this Bib entry to the end of vec_bibEntryList.
 
+        //char s[1000] = { 0 };
+        //strcpy(s, str_BibEntryBody.c_str());
+        //cout << str_BibEntryBody.c_str() << endl;
+
+        vec_bibEntryList.push_back(oneEntry);
+
+        // Move the iterator.
         return pos_beginBibEntryBody + 1;
     }
 }
 
 void BibData::getBibEntryList()
 {
-    string::size_type pos_begin = 0;
+    BibString::size_type pos_begin = 0;
 
     while (pos_begin != str_BibData.npos && pos_begin < str_BibData.length())
-    {
-        pos_begin = getBibEntry(pos_begin);
-    }
+        pos_begin = getOneBibEntry(pos_begin);
 }

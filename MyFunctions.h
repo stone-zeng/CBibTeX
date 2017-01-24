@@ -3,7 +3,7 @@
 
 #include <string>
 
-std::string::size_type findCharacter(const std::string& s, const char& ch,
+inline std::string::size_type findCharacter(const std::string& s, const char& ch,
     const std::string::size_type& beginPos = 0)
 {
     auto pos_Character = beginPos;
