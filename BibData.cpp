@@ -48,9 +48,11 @@ namespace CBibTeX
 
     void BibData::getBibEntryList()
     {
+        // TODO: 20170127  类型名需要统一
         BibString::size_type pos_begin = 0;
+        BibString::size_type pos_end = str_BibData.length();
 
-        while (pos_begin != str_BibData.npos && pos_begin < str_BibData.length())
+        while (pos_begin != str_BibData.npos && pos_begin < pos_end)
         {
             // 查找 Bib 条目开始之标记 '@'
             auto pos_BibEntryMarker = findCharacter(str_BibData, '@', pos_begin);
@@ -59,6 +61,7 @@ namespace CBibTeX
             if (pos_BibEntryMarker == str_BibData.npos)
                 break;
 
+            // TODO: 20170127  圆括号
             // 由大括号确定 Bib 条目主体
             auto pos_beginBibEntryBody
                 = findCharacter(str_BibData, '{', pos_BibEntryMarker);
@@ -70,6 +73,7 @@ namespace CBibTeX
 
             do
             {
+                //TODO: 需要考虑 '\{' 和 '\}'
                 if (str_BibData[pos_endBibEntryBody] == '{')
                     ++bracketFlag;
                 if (str_BibData[pos_endBibEntryBody] == '}')
@@ -78,15 +82,23 @@ namespace CBibTeX
                 ++pos_endBibEntryBody;
             } while (bracketFlag != 0);
 
-            // BibEntryType 长度：'@' 至 '{' 前一位
-            auto len_BibEntryType = pos_beginBibEntryBody - pos_BibEntryMarker;
-            // BibEntryBody 长度：{' 至 '}'
-            auto len_BibEntryBody = pos_endBibEntryBody - pos_beginBibEntryBody;
+            // BibEntryType 长度：'@' 与 '{' 之间，不含符号本身
+            auto len_BibEntryType = pos_beginBibEntryBody - pos_BibEntryMarker - 1;
+            // BibEntryBody 长度：'{' 与 '}' 之间，不含括号本身
+            auto len_BibEntryBody = pos_endBibEntryBody - pos_beginBibEntryBody - 1;
 
             // 获取 Bib 条目
-            BibString str_BibEntryType(str_BibData, pos_BibEntryMarker, len_BibEntryType);
-            BibString str_BibEntryBody(str_BibData, pos_beginBibEntryBody, len_BibEntryBody);
+            BibString str_BibEntryType(str_BibData, pos_BibEntryMarker + 1, len_BibEntryType);
+            BibString str_BibEntryBody(str_BibData, pos_beginBibEntryBody + 1, len_BibEntryBody);
+
             BibEntry entry(str_BibEntryType, str_BibEntryBody);
+
+            // DEBUG
+            //char buffer1[10] = {0};
+            char buffer2[1000] = { 0 };
+            auto buffer1 = entry.type;
+            strcpy(buffer2, entry.key.c_str());
+            // DEBUG
 
             // 追加该条目至 vec_bibEntryList 末尾
             vec_bibEntryList.push_back(entry);

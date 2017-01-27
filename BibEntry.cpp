@@ -1,7 +1,10 @@
-#include <cctype>
+﻿#include <cctype>
+#include <iostream>
 #include "BibString.h"
 #include "BibEntry.h"
 #include "MyFunctions.h"
+
+using namespace std;
 
 namespace CBibTeX
 {
@@ -10,14 +13,6 @@ namespace CBibTeX
 
     BibEntry::BibEntry(const BibString& str_BibEntryType, const BibString& str_BibEntryBody)
     {
-        initialize(str_BibEntryType, str_BibEntryBody);
-        //type = getType(str_BibEntryType);
-        //key = getKey(str_BibEntryBody);
-        //fields = getFields(str_BibEntryBody);
-    }
-
-    void CBibTeX::BibEntry::initialize(const BibString & str_BibEntryType, const BibString & str_BibEntryBody)
-    {
         type = getType(str_BibEntryType);
         key = getKey(str_BibEntryBody);
         fields = getFields(str_BibEntryBody);
@@ -25,18 +20,21 @@ namespace CBibTeX
 
     BibEntryType BibEntry::getType(const BibString& str_BibEntryType)
     {
-        BibString temp_str_BibEntryType(str_BibEntryType, 1);
+        // 不含 '@' 的条目名称字符串
+        // e.g. "Article"
+        BibString temp_str_BibEntryType(str_BibEntryType);
 
+        // Bib 条目名不区分大小写
+        // 此处全部转换为大写
         for (auto& ch : temp_str_BibEntryType)
             ch = toupper(ch);
 
         // TODO: 20170124  remove space.
 
+        // 遍历 map_BibEntry，找到与字符串对应的类型名
         for (auto iter = map_BibEntry.begin(); iter != map_BibEntry.end(); ++iter)
-        {
             if (temp_str_BibEntryType == iter->second)
                 return iter->first;
-        }
 
         // TODO: 20170124  need to return an error.
         return BibEntryType(-1);
@@ -44,8 +42,9 @@ namespace CBibTeX
 
     BibString BibEntry::getKey(const BibString& str_BibEntryBody)
     {
-        auto pos_beginKey = 1;
-        auto pos_endKey = findCharacter(str_BibEntryBody, ',');
+        // TODO: 20170127  类型名需要统一
+        size_t pos_beginKey = 0;
+        size_t pos_endKey = findCharacter(str_BibEntryBody, ',');
 
         auto len_Key = pos_endKey - pos_beginKey;
 
@@ -54,6 +53,72 @@ namespace CBibTeX
 
     BibFieldSet BibEntry::getFields(const BibString& str_BibEntryBody)
     {
+        // key 后 ',' 后的第一个字符
+        auto pos_begin = findCharacter(str_BibEntryBody, ',') + 1;
+        auto pos_end = str_BibEntryBody.length();
+
+        while (pos_begin < pos_end)
+        {
+            //********** 读取域名 (field name) **********//
+            auto pos_beginFieldName = pos_begin;
+            auto pos_endFieldName = findCharacter(str_BibEntryBody, '=', pos_begin);
+
+            // 未找到 '=' 则退出循环
+            if (pos_endFieldName == str_BibEntryBody.npos)
+                break;
+
+            auto len_fieldName = pos_endFieldName - pos_beginFieldName;
+            BibString fieldName(str_BibEntryBody, pos_begin, len_fieldName);
+
+            //********** 读取域值 (field value) **********//
+            int bracketFlag = 0;
+            int quotationFlag = 0;
+
+            // '=' 后第一个字符
+            auto i_beginFieldValue = pos_endFieldName + 1;
+            auto i_endFieldValue = i_beginFieldValue;
+
+            while (true)
+            {
+                auto temp_ch = str_BibEntryBody[i_endFieldValue];
+
+                // 检测到 Bib 条目的最外层 '}' 则退出内层循环
+                if (bracketFlag < 0)
+                    break;
+
+                // 检测到 ',' 且不在 '{' '}' 或 '\"' '\"' 之间，退出内层循环
+                if (temp_ch == ',')
+                    if (bracketFlag == 0 && quotationFlag == 0)
+                        break;
+
+                // 遇到 '{' 则 +1，遇到 '}' 则 -1；
+                // 回到 0 值，说明括号结束
+                if (temp_ch == '{')
+                    ++bracketFlag;
+                if (temp_ch == '}')
+                    --bracketFlag;
+
+                // flag = 0，则遇到 '\"' 改为 1；
+                // flag = 1，则遇到 '\"' 改为 0；
+                // 回到 0 值，说明括号结束
+                if (temp_ch == '\"')
+                {
+                    if (quotationFlag == 0)
+                        quotationFlag = 1;
+                    else
+                        quotationFlag = 0;
+                }
+                    
+                ++i_endFieldValue;
+            }
+
+            auto len_fieldValue = i_endFieldValue - i_beginFieldValue;
+            BibString fieldValue(str_BibEntryBody, i_beginFieldValue, len_fieldValue);
+
+            // 移动 pos_begin 至新位置
+            pos_begin = i_endFieldValue + 1;
+        }
+
         return BibFieldSet();
     }
 }

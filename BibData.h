@@ -23,7 +23,7 @@ namespace CBibTeX
 
         // 删除注释
         void deleteComment();
-        // 获取 Bib 列表，返回列表长度
+        // 获取 Bib 列表
         void getBibEntryList();
     };
 }

@@ -1,4 +1,4 @@
-#ifndef _BIB_ENTRY_H_
+﻿#ifndef _BIB_ENTRY_H_
 #define _BIB_ENTRY_H_
 
 #include <map>
@@ -48,16 +48,18 @@ namespace CBibTeX
     private:
         //BibString str_BibEntry_Data;
 
-        // Get the Bib entry type from string.
+        // 获取 Bib 条目
         BibEntryType getType(const BibString& str_BibEntryType);
         BibString getKey(const BibString& str_BibEntryBody);
         BibFieldSet getFields(const BibString& str_BibEntryBody);
 
     public:
         BibEntry();
+        // 参数：条目类型，条目主体
+        // 二者分开的原因：减少循环次数 -> 见 BibData.cpp :: getBibEntryList()
         BibEntry(const BibString& str_BibEntryType, const BibString& str_BibEntryBody);
 
-        void initialize(const BibString& str_BibEntryType, const BibString& str_BibEntryBody);
+        //void initialize(const BibString& str_BibEntryType, const BibString& str_BibEntryBody);
 
         BibEntryType type;
         BibString key;
