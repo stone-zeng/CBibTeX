@@ -5,6 +5,8 @@
 #include <Windows.h>
 #include "BibData.h"
 
+#include "MyFunctions.h"
+
 using namespace std;
 
 int main()
@@ -21,7 +23,7 @@ int main()
     CBibTeX::BibData test("Test_Bib_Data/biblatex-ieee.bib");
 
     //for (auto i : test.data)
-    //	cout << i;
+    //    cout << i;
     //cout << endl;
     //cout << test.data.length() << endl;
     QueryPerformanceCounter(&endTime);
@@ -39,7 +41,4 @@ int main()
     QueryPerformanceCounter(&endTime);
     cout << "Time(get Bib entry)= " << (double) ((endTime.QuadPart - beginTime.QuadPart) * 1000. / freq.QuadPart) << " ms."
         << endl << endl;
-
-    //for (auto i : test.vec_bibEntryList)
-    //    cout << i.key << endl;
 }

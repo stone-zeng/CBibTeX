@@ -93,13 +93,6 @@ namespace CBibTeX
 
             BibEntry entry(str_BibEntryType, str_BibEntryBody);
 
-            // DEBUG
-            //char buffer1[10] = {0};
-            char buffer2[1000] = { 0 };
-            auto buffer1 = entry.type;
-            strcpy(buffer2, entry.key.c_str());
-            // DEBUG
-
             // 追加该条目至 vec_bibEntryList 末尾
             vec_bibEntryList.push_back(entry);
 

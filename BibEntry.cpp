@@ -24,12 +24,11 @@ namespace CBibTeX
         // e.g. "Article"
         BibString temp_str_BibEntryType(str_BibEntryType);
 
+        temp_str_BibEntryType = deleteLeftRightSpace(temp_str_BibEntryType);
+
         // Bib 条目名不区分大小写
         // 此处全部转换为大写
-        for (auto& ch : temp_str_BibEntryType)
-            ch = toupper(ch);
-
-        // TODO: 20170124  remove space.
+        temp_str_BibEntryType = toUpperCase(temp_str_BibEntryType);
 
         // 遍历 map_BibEntry，找到与字符串对应的类型名
         for (auto iter = map_BibEntry.begin(); iter != map_BibEntry.end(); ++iter)
@@ -57,6 +56,13 @@ namespace CBibTeX
         auto pos_begin = findCharacter(str_BibEntryBody, ',') + 1;
         auto pos_end = str_BibEntryBody.length();
 
+        // DEBUG
+        char buffer1[100] = { 0 };
+        char buffer2[100] = { 0 };
+        char buffer3[100] = { 0 };
+        char buffer4[100] = { 0 };
+        // DEBUG
+
         while (pos_begin < pos_end)
         {
             //********** 读取域名 (field name) **********//
@@ -69,6 +75,28 @@ namespace CBibTeX
 
             auto len_fieldName = pos_endFieldName - pos_beginFieldName;
             BibString fieldName(str_BibEntryBody, pos_begin, len_fieldName);
+            
+            // DEBUG
+            strcpy(buffer1, fieldName.c_str());
+            // DEBUG
+
+            // 删除头尾空白字符
+            fieldName = deleteLeftRightSpace(fieldName);
+
+            // Bib 域不区分大小写，全部转换为大写
+            fieldName = toUpperCase(fieldName);
+
+            // DEBUG
+            strcpy(buffer2, fieldName.c_str());
+            // DEBUG
+
+            // TODO: 20170129 "-1" 用来报错
+            int fieldNameID = -1;
+
+            // 遍历 map_BibField，找到与字符串对应的类型名
+            for (auto iter = map_BibField.begin(); iter != map_BibField.end(); ++iter)
+                if (fieldName == iter->second)
+                    fieldNameID = iter->first;
 
             //********** 读取域值 (field value) **********//
             int bracketFlag = 0;
@@ -114,6 +142,20 @@ namespace CBibTeX
 
             auto len_fieldValue = i_endFieldValue - i_beginFieldValue;
             BibString fieldValue(str_BibEntryBody, i_beginFieldValue, len_fieldValue);
+
+            // DEBUG
+            //strcpy(buffer3, fieldValue.c_str());
+            // DEBUG
+
+            // 删除头尾空白字符
+            fieldValue = deleteLeftRightSpace(fieldValue);
+
+            // DEBUG
+            //strcpy(buffer4, fieldValue.c_str());
+            // DEBUG
+
+            //**********  **********//
+
 
             // 移动 pos_begin 至新位置
             pos_begin = i_endFieldValue + 1;

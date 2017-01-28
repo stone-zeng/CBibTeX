@@ -7,6 +7,14 @@ namespace CBibTeX
 {
     // TODO: 20170124  use UNICODE.
     typedef std::string BibString;
+
+    //class BibString :public std::string
+    //{
+    //public:
+    //    //BibString();
+    //    //BibString(const BibString&, const BibString::size_type&, const BibString::difference_type&);
+    //};
+
 }
 
 #endif

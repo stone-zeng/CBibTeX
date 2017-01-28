@@ -26,7 +26,8 @@ namespace CBibTeX
         Unpublished
     };
 
-    const std::map<BibEntryType, BibString> map_BibEntry = {
+    const std::map<BibEntryType, BibString> map_BibEntry =
+    {
         { Article,         "ARTICLE" },
         { Book,            "BOOK" },
         { Booklet,         "BOOKLET" },
@@ -42,6 +43,58 @@ namespace CBibTeX
         { Techreport,      "TECHREPORT" },
         { Unpublished,     "UNPUBLISHED" }
     };
+
+
+    enum BibField
+    {
+        Address,
+        Author,
+        BookTitle,
+        Chapter,
+        CrossRef,
+        Edition,
+        Editor,
+        HowPublished,
+        Institution,
+        Month,
+        Note,
+        Number,
+        Organization,
+        Pages,
+        Publisher,
+        School,
+        Series,
+        Title,
+        Type,
+        Volume,
+        Year,
+    };
+
+    const std::map<BibField, BibString> map_BibField =
+    {
+        {Address,          "ADDRESS" },
+        {Author,           "AUTHOR" },
+        {BookTitle,        "BOOKTITLE" },
+        {Chapter,          "CHAPTER" },
+        {CrossRef,         "CROSSREF" },
+        {Edition,          "EDITION" },
+        {Editor,           "EDITOR" },
+        {HowPublished,     "HOWPUBLISHED" },
+        {Institution,      "INSTITUTION" },
+        {Month,            "MONTH" },
+        {Note,             "NOTE" },
+        {Number,           "NUMBER" },
+        {Organization,     "ORGANIZATION" },
+        {Pages,            "PAGES" },
+        {Publisher,        "PUBLISHER" },
+        {School,           "SCHOOL" },
+        {Series,           "SERIES" },
+        {Title,            "TITLE" },
+        {Type,             "TYPE" },
+        {Volume,           "VOLUME" },
+        {Year,             "YEAR" }
+    };
+
 
     class BibEntry
     {
