@@ -12,20 +12,29 @@ namespace CBibTeX
         public:
             _BaseField();
             _BaseField(const BibString& str_content);
+
+            // DEBUG
+            std::string xxx;
+            // DEBUG
         };
 
-        class Author :_BaseField
+        class Author : public _BaseField
         {
-        //public:
-        //    Author();
-        //    Author(const CBibTeX::BibString& str_author);
+        public:
+            using _BaseField::_BaseField;
         };
 
-        class Date
-        {};
+        class Date : public _BaseField
+        {
+        public:
+            using _BaseField::_BaseField;
+        };
 
-        class Title
-        {};
+        class Title : public _BaseField
+        {
+        public:
+            using _BaseField::_BaseField;
+        };
     }
 
     struct BibFieldSet

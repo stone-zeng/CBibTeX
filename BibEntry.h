@@ -8,101 +8,99 @@
 
 namespace CBibTeX
 {
-    enum BibEntryType
+    enum enum_BibEntry
     {
-        Article,
-        Book,
-        Booklet,
-        Conference,
-        Inbook,
-        Incollection,
-        Inproceedings,
-        Manual,
-        Mastersthesis,
-        Misc,
-        Phdthesis,
-        Proceedings,
-        Techreport,
-        Unpublished
+        $_Article,
+        $_Book,
+        $_Booklet,
+        $_Conference,
+        $_Inbook,
+        $_Incollection,
+        $_Inproceedings,
+        $_Manual,
+        $_Mastersthesis,
+        $_Misc,
+        $_Phdthesis,
+        $_Proceedings,
+        $_Techreport,
+        $_Unpublished
     };
 
-    const std::map<BibEntryType, BibString> map_BibEntry =
+    const std::map<enum_BibEntry, BibString> map_BibEntry =
     {
-        { Article,         "ARTICLE" },
-        { Book,            "BOOK" },
-        { Booklet,         "BOOKLET" },
-        { Conference,      "CONFERENCE" },
-        { Inbook,          "INBOOK" },
-        { Incollection,    "INCOLLECTION" },
-        { Inproceedings,   "INPROCEEDINGS" },
-        { Manual,          "MANUAL" },
-        { Mastersthesis,   "MASTERSTHESIS" },
-        { Misc,            "MISC" },
-        { Phdthesis,       "PHDTHESIS" },
-        { Proceedings,     "PROCEEDINGS" },
-        { Techreport,      "TECHREPORT" },
-        { Unpublished,     "UNPUBLISHED" }
+        { $_Article,           "ARTICLE" },
+        { $_Book,              "BOOK" },
+        { $_Booklet,           "BOOKLET" },
+        { $_Conference,        "CONFERENCE" },
+        { $_Inbook,            "INBOOK" },
+        { $_Incollection,      "INCOLLECTION" },
+        { $_Inproceedings,     "INPROCEEDINGS" },
+        { $_Manual,            "MANUAL" },
+        { $_Mastersthesis,     "MASTERSTHESIS" },
+        { $_Misc,              "MISC" },
+        { $_Phdthesis,         "PHDTHESIS" },
+        { $_Proceedings,       "PROCEEDINGS" },
+        { $_Techreport,        "TECHREPORT" },
+        { $_Unpublished,       "UNPUBLISHED" }
     };
 
 
-    enum BibField
+    enum enum_BibField
     {
-        Address,
-        Author,
-        BookTitle,
-        Chapter,
-        CrossRef,
-        Edition,
-        Editor,
-        HowPublished,
-        Institution,
-        Month,
-        Note,
-        Number,
-        Organization,
-        Pages,
-        Publisher,
-        School,
-        Series,
-        Title,
-        Type,
-        Volume,
-        Year,
+        $_Address,
+        $_Author,
+        $_BookTitle,
+        $_Chapter,
+        $_CrossRef,
+        $_Edition,
+        $_Editor,
+        $_HowPublished,
+        $_Institution,
+        $_Month,
+        $_Note,
+        $_Number,
+        $_Organization,
+        $_Pages,
+        $_Publisher,
+        $_School,
+        $_Series,
+        $_Title,
+        $_Type,
+        $_Volume,
+        $_Year,
     };
 
-    const std::map<BibField, BibString> map_BibField =
+    const std::map<enum_BibField, BibString> map_BibField =
     {
-        {Address,          "ADDRESS" },
-        {Author,           "AUTHOR" },
-        {BookTitle,        "BOOKTITLE" },
-        {Chapter,          "CHAPTER" },
-        {CrossRef,         "CROSSREF" },
-        {Edition,          "EDITION" },
-        {Editor,           "EDITOR" },
-        {HowPublished,     "HOWPUBLISHED" },
-        {Institution,      "INSTITUTION" },
-        {Month,            "MONTH" },
-        {Note,             "NOTE" },
-        {Number,           "NUMBER" },
-        {Organization,     "ORGANIZATION" },
-        {Pages,            "PAGES" },
-        {Publisher,        "PUBLISHER" },
-        {School,           "SCHOOL" },
-        {Series,           "SERIES" },
-        {Title,            "TITLE" },
-        {Type,             "TYPE" },
-        {Volume,           "VOLUME" },
-        {Year,             "YEAR" }
+        { $_Address,           "ADDRESS" },
+        { $_Author,            "AUTHOR" },
+        { $_BookTitle,         "BOOKTITLE" },
+        { $_Chapter,           "CHAPTER" },
+        { $_CrossRef,          "CROSSREF" },
+        { $_Edition,           "EDITION" },
+        { $_Editor,            "EDITOR" },
+        { $_HowPublished,      "HOWPUBLISHED" },
+        { $_Institution,       "INSTITUTION" },
+        { $_Month,             "MONTH" },
+        { $_Note,              "NOTE" },
+        { $_Number,            "NUMBER" },
+        { $_Organization,      "ORGANIZATION" },
+        { $_Pages,             "PAGES" },
+        { $_Publisher,         "PUBLISHER" },
+        { $_School,            "SCHOOL" },
+        { $_Series,            "SERIES" },
+        { $_Title,             "TITLE" },
+        { $_Type,              "TYPE" },
+        { $_Volume,            "VOLUME" },
+        { $_Year,              "YEAR" }
     };
 
 
     class BibEntry
     {
     private:
-        //BibString str_BibEntry_Data;
-
         // 获取 Bib 条目
-        BibEntryType getType(const BibString& str_BibEntryType);
+        enum_BibEntry getType(const BibString& str_BibEntryType);
         BibString getKey(const BibString& str_BibEntryBody);
         BibFieldSet getFields(const BibString& str_BibEntryBody);
 
@@ -112,35 +110,9 @@ namespace CBibTeX
         // 二者分开的原因：减少循环次数 -> 见 BibData.cpp :: getBibEntryList()
         BibEntry(const BibString& str_BibEntryType, const BibString& str_BibEntryBody);
 
-        //void initialize(const BibString& str_BibEntryType, const BibString& str_BibEntryBody);
-
-        BibEntryType type;
+        enum_BibEntry type;
         BibString key;
         BibFieldSet fields;
-
-        //typedef std::string Bib_Type_Key;
-        //
-        //typedef std::string Bib_Type_Address;
-        //typedef std::string Bib_Type_Author;
-        //typedef std::string Bib_Type_BookTitle;
-        //typedef std::string Bib_Type_Chapter;
-        //typedef std::string Bib_Type_CrossRef;
-        //typedef std::string Bib_Type_Edition;
-        //typedef std::string Bib_Type_Editor;
-        //typedef std::string Bib_Type_HowPublished;
-        //typedef std::string Bib_Type_Institution;
-        //typedef std::string Bib_Type_Month;
-        //typedef std::string Bib_Type_Note;
-        //typedef std::string Bib_Type_Number;
-        //typedef std::string Bib_Type_Organization;
-        //typedef std::string Bib_Type_Pages;
-        //typedef std::string Bib_Type_Publisher;
-        //typedef std::string Bib_Type_School;
-        //typedef std::string Bib_Type_Series;
-        //typedef std::string Bib_Type_Title;
-        //typedef std::string Bib_Type_Type;
-        //typedef std::string Bib_Type_Volume;
-        //typedef int Bib_Type_Year;
     };
 }
 

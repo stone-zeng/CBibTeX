@@ -18,7 +18,7 @@ namespace CBibTeX
         fields = getFields(str_BibEntryBody);
     }
 
-    BibEntryType BibEntry::getType(const BibString& str_BibEntryType)
+    enum_BibEntry BibEntry::getType(const BibString& str_BibEntryType)
     {
         // 不含 '@' 的条目名称字符串
         // e.g. "Article"
@@ -36,7 +36,7 @@ namespace CBibTeX
                 return iter->first;
 
         // TODO: 20170124  need to return an error.
-        return BibEntryType(-1);
+        return enum_BibEntry(-1);
     }
 
     BibString BibEntry::getKey(const BibString& str_BibEntryBody)
@@ -57,11 +57,14 @@ namespace CBibTeX
         auto pos_end = str_BibEntryBody.length();
 
         // DEBUG
-        char buffer1[100] = { 0 };
-        char buffer2[100] = { 0 };
-        char buffer3[100] = { 0 };
-        char buffer4[100] = { 0 };
+        char buffer1[1000] = { 0 };
+        char buffer2[1000] = { 0 };
+        char buffer3[1000] = { 0 };
+        char buffer4[1000] = { 0 };
         // DEBUG
+
+        // 域集合
+        BibFieldSet fields;
 
         while (pos_begin < pos_end)
         {
@@ -89,14 +92,6 @@ namespace CBibTeX
             // DEBUG
             strcpy(buffer2, fieldName.c_str());
             // DEBUG
-
-            // TODO: 20170129 "-1" 用来报错
-            int fieldNameID = -1;
-
-            // 遍历 map_BibField，找到与字符串对应的类型名
-            for (auto iter = map_BibField.begin(); iter != map_BibField.end(); ++iter)
-                if (fieldName == iter->second)
-                    fieldNameID = iter->first;
 
             //********** 读取域值 (field value) **********//
             int bracketFlag = 0;
@@ -147,15 +142,83 @@ namespace CBibTeX
             //strcpy(buffer3, fieldValue.c_str());
             // DEBUG
 
-            // 删除头尾空白字符
+            // 删除首尾空白字符
             fieldValue = deleteLeftRightSpace(fieldValue);
 
-            // DEBUG
-            //strcpy(buffer4, fieldValue.c_str());
-            // DEBUG
+            // 删除首尾括号、引号
+            if (!fieldValue.empty())
+                // 下标运算要求 fieldValu 非空
+                if (fieldValue[0] == '{' || fieldValue[0] == '\"')
+                {
+                    fieldValue.erase(0, 1);
+                    fieldValue.erase(fieldValue.length() - 1 , 1);
+                }
 
             //**********  **********//
 
+            // TODO: 20170129 "-1" 用来报错
+            int fieldNameID = -1;
+
+            // 遍历 map_BibField，找到与字符串对应的类型名
+            for (auto iter = map_BibField.begin(); iter != map_BibField.end(); ++iter)
+                if (fieldName == iter->second)
+                    fieldNameID = iter->first;
+            
+            switch (fieldNameID)
+            {
+                case $_Address:
+                    break;
+                case $_Author:
+                    fields.author = Field::Author(fieldValue);
+                    break;
+                case $_BookTitle:
+                    break;
+                case $_Chapter:
+                    break;
+                case $_CrossRef:
+                    break;
+                case $_Edition:
+                    break;
+                case $_Editor:
+                    break;
+                case $_HowPublished:
+                    break;
+                case $_Institution:
+                    break;
+                case $_Month:
+                    break;
+                case $_Note:
+                    break;
+                case $_Number:
+                    break;
+                case $_Organization:
+                    break;
+                case $_Pages:
+                    break;
+                case $_Publisher:
+                    break;
+                case $_School:
+                    break;
+                case $_Series:
+                    break;
+                case $_Title:
+                    fields.title = Field::Title(fieldValue);
+                    break;
+                case $_Type:
+                    break;
+                case $_Volume:
+                    break;
+                case $_Year:
+                    break;
+
+                default:
+                    break;
+            }
+
+            // DEBUG
+            strcpy(buffer3, fields.author.xxx.c_str());
+            strcpy(buffer4, fields.title.xxx.c_str());
+            // DEBUG
 
             // 移动 pos_begin 至新位置
             pos_begin = i_endFieldValue + 1;
