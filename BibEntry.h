@@ -100,19 +100,19 @@ namespace CBibTeX
     {
     private:
         // 获取 Bib 条目
-        enum_BibEntry getType(const BibString& str_BibEntryType);
-        BibString getKey(const BibString& str_BibEntryBody);
-        BibFieldSet getFields(const BibString& str_BibEntryBody);
+        void getType(const BibString& str_BibEntryType);
+        void getKey(const BibString& str_BibEntryBody);
+        void getFields(const BibString& str_BibEntryBody);
 
     public:
-        BibEntry();
+        BibEntry() = default;
         // 参数：条目类型，条目主体
         // 二者分开的原因：减少循环次数 -> 见 BibData.cpp :: getBibEntryList()
         BibEntry(const BibString& str_BibEntryType, const BibString& str_BibEntryBody);
 
         enum_BibEntry type;
         BibString key;
-        BibFieldSet fields;
+        BibFields fields;
     };
 }
 

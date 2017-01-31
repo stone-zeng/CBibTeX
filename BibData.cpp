@@ -9,9 +9,6 @@ using namespace std;
 
 namespace CBibTeX
 {
-    BibData::BibData()
-    {}
-
     BibData::BibData(const BibString& fileName)
     {
         ifstream inputFile(fileName, fstream::in);

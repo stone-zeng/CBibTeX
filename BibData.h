@@ -13,7 +13,7 @@ namespace CBibTeX
     private:
         typedef std::vector<BibEntry> BibList;
     public:
-        BibData();
+        BibData() = default;
         BibData(const BibString& fileName);
 
         // 原始 Bib 数据，字符串格式
