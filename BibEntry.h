@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+
 #include "BibFields.h"
 #include "BibString.h"
 

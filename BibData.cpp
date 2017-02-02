@@ -1,7 +1,7 @@
-﻿#include <string>
-#include <fstream>
+﻿#include <fstream>
 #include <iostream>
-#include "MyFunctions.h"
+#include <string>
+
 #include "BibString.h"
 #include "BibData.h"
 
@@ -9,7 +9,7 @@ using namespace std;
 
 namespace CBibTeX
 {
-    BibData::BibData(const BibString& fileName)
+    BibData::BibData(const string& fileName)
     {
         ifstream inputFile(fileName, fstream::in);
 
@@ -31,14 +31,18 @@ namespace CBibTeX
 
     void BibData::deleteComment()
     {
-        auto pos_beginComment = findCharacter(str_BibData, '%');
-        auto pos_endComment = str_BibData.find('\n', pos_beginComment);
+        //auto pos_beginComment = findCharacter(str_BibData, '%');
+        //auto pos_endComment = str_BibData.find('\n', pos_beginComment);
+        auto pos_beginComment = str_BibData.findCharacter('%');
+        auto pos_endComment = str_BibData.findCharacter('\n', pos_beginComment);
         do
         {
             if (pos_endComment > pos_beginComment)
                 str_BibData.erase(pos_beginComment, pos_endComment - pos_beginComment);
-            pos_beginComment = findCharacter(str_BibData, '%');
-            pos_endComment = str_BibData.find('\n', pos_beginComment);
+            //pos_beginComment = findCharacter(str_BibData, '%');
+            //pos_endComment = str_BibData.find('\n', pos_beginComment);
+            pos_beginComment = str_BibData.findCharacter('%');
+            pos_endComment = str_BibData.findCharacter('\n', pos_beginComment);
         } while (pos_beginComment != str_BibData.npos);
 
     }
@@ -46,13 +50,14 @@ namespace CBibTeX
     void BibData::getBibEntryList()
     {
         // TODO: 20170127  类型名需要统一
-        BibString::size_type pos_begin = 0;
-        BibString::size_type pos_end = str_BibData.length();
+        BibString::SizeType pos_begin = 0;
+        BibString::SizeType pos_end = str_BibData.size();
 
         while (pos_begin != str_BibData.npos && pos_begin < pos_end)
         {
             // 查找 Bib 条目开始之标记 '@'
-            auto pos_BibEntryMarker = findCharacter(str_BibData, '@', pos_begin);
+            //auto pos_BibEntryMarker = findCharacter(str_BibData, '@', pos_begin);
+            auto pos_BibEntryMarker = str_BibData.findCharacter('@', pos_begin);
 
             // 若未找到 '@'，则跳出循环
             if (pos_BibEntryMarker == str_BibData.npos)
@@ -60,8 +65,9 @@ namespace CBibTeX
 
             // TODO: 20170127  圆括号
             // 由大括号确定 Bib 条目主体
-            auto pos_beginBibEntryBody
-                = findCharacter(str_BibData, '{', pos_BibEntryMarker);
+            //auto pos_beginBibEntryBody
+            //    = findCharacter(str_BibData, '{', pos_BibEntryMarker);
+            auto pos_beginBibEntryBody = str_BibData.findCharacter('{', pos_BibEntryMarker);
             auto pos_endBibEntryBody = pos_beginBibEntryBody;
 
             // 遇到 '{' 则 +1，遇到 '}' 则 -1；
@@ -70,7 +76,7 @@ namespace CBibTeX
 
             do
             {
-                //TODO: 需要考虑 '\{' 和 '\}'
+                //TODO: 20170202  需要考虑 '\{' 和 '\}'
                 if (str_BibData[pos_endBibEntryBody] == '{')
                     ++bracketFlag;
                 if (str_BibData[pos_endBibEntryBody] == '}')

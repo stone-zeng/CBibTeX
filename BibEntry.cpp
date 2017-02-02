@@ -1,8 +1,8 @@
 ﻿#include <cctype>
 #include <iostream>
+
 #include "BibString.h"
 #include "BibEntry.h"
-#include "MyFunctions.h"
 
 using namespace std;
 
@@ -21,11 +21,13 @@ namespace CBibTeX
         // e.g. "Article"
         BibString temp_str_BibEntryType(str_BibEntryType);
 
-        temp_str_BibEntryType = deleteLeftRightSpace(temp_str_BibEntryType);
+        //temp_str_BibEntryType = deleteLeftRightSpace(temp_str_BibEntryType);
+        temp_str_BibEntryType.deleteLeftRightSpace();
 
         // Bib 条目名不区分大小写
         // 此处全部转换为大写
-        temp_str_BibEntryType = toUpperCase(temp_str_BibEntryType);
+        //temp_str_BibEntryType = toUpperCase(temp_str_BibEntryType);
+        temp_str_BibEntryType.toUpperCase();
 
         // 遍历 map_BibEntry，找到与字符串对应的类型名
         for (auto iter = map_BibEntry.begin(); iter != map_BibEntry.end(); ++iter)
@@ -42,8 +44,9 @@ namespace CBibTeX
     void BibEntry::getKey(const BibString& str_BibEntryBody)
     {
         // TODO: 20170127  类型名需要统一
-        size_t pos_beginKey = 0;
-        size_t pos_endKey = findCharacter(str_BibEntryBody, ',');
+        BibString::SizeType pos_beginKey = 0;
+        //size_t pos_endKey = findCharacter(str_BibEntryBody, ',');
+        BibString::SizeType pos_endKey = str_BibEntryBody.findCharacter(',');
 
         auto len_Key = pos_endKey - pos_beginKey;
 
@@ -53,8 +56,10 @@ namespace CBibTeX
     void BibEntry::getFields(const BibString& str_BibEntryBody)
     {
         // key 后 ',' 后的第一个字符
-        auto pos_begin = findCharacter(str_BibEntryBody, ',') + 1;
-        auto pos_end = str_BibEntryBody.length();
+        //auto pos_begin = findCharacter(str_BibEntryBody, ',') + 1;
+        //auto pos_end = str_BibEntryBody.length();
+        auto pos_begin = str_BibEntryBody.findCharacter(',') + 1;
+        auto pos_end = str_BibEntryBody.size();
 
         // DEBUG
         char buffer1[1000] = { 0 };
@@ -68,7 +73,7 @@ namespace CBibTeX
         {
             //********** 读取域名 (field name) **********//
             auto pos_beginFieldName = pos_begin;
-            auto pos_endFieldName = findCharacter(str_BibEntryBody, '=', pos_begin);
+            auto pos_endFieldName = str_BibEntryBody.findCharacter('=', pos_begin);
 
             // 未找到 '=' 则退出循环
             if (pos_endFieldName == str_BibEntryBody.npos)
@@ -78,17 +83,17 @@ namespace CBibTeX
             BibString fieldName(str_BibEntryBody, pos_begin, len_fieldName);
             
             // DEBUG
-            strcpy(buffer1, fieldName.c_str());
+            strcpy(buffer1, fieldName.cString());
             // DEBUG
 
             // 删除头尾空白字符
-            fieldName = deleteLeftRightSpace(fieldName);
+            fieldName.deleteLeftRightSpace();
 
             // Bib 域不区分大小写，全部转换为大写
-            fieldName = toUpperCase(fieldName);
+            fieldName.toUpperCase();
 
             // DEBUG
-            strcpy(buffer2, fieldName.c_str());
+            strcpy(buffer2, fieldName.cString());
             // DEBUG
 
             //********** 读取域值 (field value) **********//
@@ -141,15 +146,15 @@ namespace CBibTeX
             // DEBUG
 
             // 删除首尾空白字符
-            fieldValue = deleteLeftRightSpace(fieldValue);
+            fieldValue.deleteLeftRightSpace();
 
             // 删除首尾括号、引号
-            if (!fieldValue.empty())
+            if (!fieldValue.isEmpty())
                 // 下标运算要求 fieldValu 非空
                 if (fieldValue[0] == '{' || fieldValue[0] == '\"')
                 {
                     fieldValue.erase(0, 1);
-                    fieldValue.erase(fieldValue.length() - 1 , 1);
+                    fieldValue.erase(fieldValue.size() - 1 , 1);
                 }
 
             //**********  **********//

@@ -1,11 +1,11 @@
+#include <fstream>
+#include <iostream>
 #include <string>
 #include <vector>
-#include <iostream>
-#include <fstream>
-#include <Windows.h>
-#include "BibData.h"
 
-#include "MyFunctions.h"
+#include <Windows.h>
+
+#include "BibData.h"
 
 using namespace std;
 
